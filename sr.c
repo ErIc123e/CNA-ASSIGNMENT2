@@ -67,7 +67,7 @@ void A_output(struct msg message)
     /* windowlast will always be 0 for alternating bit; but not for GoBackN */
     windowlast = (windowlast + 1) % WINDOWSIZE; 
     buffer[windowlast] = sendpkt;
-    windowcount++;
+    windowcount+ +;
 
     /* send out packet */
     if (TRACE > 0)
@@ -114,7 +114,7 @@ void A_input(struct pkt packet)
         while (windowcount > 0 && acked[buffer[windowfirst].seqnum])
         {
           windowfirst = (windowfirst +1 ) % WINDOWSIZE;
-          windowcount--; 
+          windowcount- -; 
         }
 
         /* start timer again if there are still more unacked packets in window */
@@ -137,9 +137,12 @@ void A_timerinterrupt(void)
   if (TRACE > 0)
     printf("----A: time out,resend packets!\n");
 
+  if (TRACE > 0)
+    printf("---A: resending packet %d\n",buffer[windowfirst].seqnum);
+
   /* only resent the oldest unacked packet in the buffer */
   tolayer3(A,buffer[windowfirst]);
-  packets_resent++;
+  packets_resent+ +;
 
   if (windowcount > 0)
     starttimer(A, RTT);
