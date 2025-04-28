@@ -130,7 +130,20 @@ void A_input(struct pkt packet)
   else if (TRACE > 0)
     printf ("----A: corrupted ACK is received, do nothing!\n");
 }
+/* called when A's timer goes off */
+void A_timerinterrupt(void)
+{
 
+  if (TRACE > 0)
+    printf("----A: time out,resend packets!\n");
+
+  /* only resent the oldest unacked packet in the buffer */
+  tolayer3(A,buffer[windowfirst]);
+  packets_resent++;
+
+  if (windowcount > 0)
+    starttimer(A, RTT);
+}       
 
 
 /* the following routine will be called once (only) before any other */
