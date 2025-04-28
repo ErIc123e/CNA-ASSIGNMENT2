@@ -36,7 +36,6 @@ bool IsCorrupted(struct pkt packet)
     return (true);
 }
 
-
 /********* Sender (A) variables and functions ************/
 
 static struct pkt buffer[WINDOWSIZE];  /* array for storing packets waiting for ACK */
@@ -52,7 +51,8 @@ void A_output(struct msg message)
   int i;
 
   /* if not blocked waiting on ACK */
-  if ( windowcount < WINDOWSIZE) {
+  if ( windowcount < WINDOWSIZE)
+  {
     if (TRACE > 1)
       printf("----A: New message arrives, send window is not full, send new messge to layer3!\n");
 
@@ -91,8 +91,7 @@ void A_output(struct msg message)
 
 
 /* called from layer 3, when a packet arrives for layer 4 
-   In this practical this will always be an ACK as B never sends data.
-*/
+   In this practical this will always be an ACK as B never sends data */
 void A_input(struct pkt packet)
 {
   /* if received ACK is not corrupted */ 
@@ -130,6 +129,7 @@ void A_input(struct pkt packet)
   else if (TRACE > 0)
     printf ("----A: corrupted ACK is received, do nothing!\n");
 }
+
 /* called when A's timer goes off */
 void A_timerinterrupt(void)
 {
@@ -145,7 +145,6 @@ void A_timerinterrupt(void)
     starttimer(A, RTT);
 }       
 
-
 /* the following routine will be called once (only) before any other */
 /* entity A routines are called. You can use it to do any initialization */
 void A_init(void)
@@ -160,13 +159,12 @@ void A_init(void)
   windowcount = 0;
 }
 
-
-
 /********* Receiver (B)  variables and procedures ************/
 
 static int expectedseqnum; /* the sequence number expected next by the receiver */
 static struct pkt recvpkt[SEQSPACE]; /* array for storing packets received by B */
-static bool received[SEQSPACE];
+static bool received[SEQSPACE]; 
+
 
 /* called from layer 3, when a packet arrives for layer 4 at B*/
 void B_input(struct pkt packet)
@@ -217,7 +215,6 @@ void B_input(struct pkt packet)
 void B_init(void)
 {
   expectedseqnum = 0;
-  B_nextseqnum = 1;
 }
 
 /******************************************************************************
