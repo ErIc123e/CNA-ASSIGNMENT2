@@ -1,18 +1,12 @@
-#ifndef SR_H
-#define SR_H
+extern void A_init(void);
+extern void B_init(void);
+extern void A_input(struct pkt);
+extern void B_input(struct pkt);
+extern void A_output(struct msg);
+extern void A_timerinterrupt(void);
 
-#include "emulator.h"
+/* included for extension to bidirectional communication */
+#define BIDIRECTIONAL 0       /*  0 = A->B  1 =  A<->B */
+extern void B_output(struct msg);
+extern void B_timerinterrupt(void);
 
-/* Sender-side callbacks */
-void A_init(void);
-void A_output(struct msg message);
-void A_input(struct pkt packet);
-void A_timerinterrupt(void);
-
-/* Receiver-side callbacks */
-void B_init(void);
-void B_input(struct pkt packet);
-void B_output(struct msg message);
-void B_timerinterrupt(void);
-
-#endif /* SR_H */
